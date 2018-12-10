@@ -94,6 +94,7 @@ import java.util.Arrays;
  * @see     java.lang.String
  * @since   JDK1.0
  */
+//  final  修饰的 不可以继承  与 StringBuilder对比  线程安全 方法加锁
  public final class StringBuffer
     extends AbstractStringBuilder
     implements java.io.Serializable, CharSequence
@@ -103,6 +104,7 @@ import java.util.Arrays;
      * A cache of the last value returned by toString. Cleared
      * whenever the StringBuffer is modified.
      */
+    //  transient  修饰的 char 数组
     private transient char[] toStringCache;
 
     /** use serialVersionUID from JDK 1.0.2 for interoperability */
@@ -112,6 +114,7 @@ import java.util.Arrays;
      * Constructs a string buffer with no characters in it and an
      * initial capacity of 16 characters.
      */
+    //初始 容量  16
     public StringBuffer() {
         super(16);
     }
@@ -670,6 +673,8 @@ import java.util.Arrays;
         if (toStringCache == null) {
             toStringCache = Arrays.copyOfRange(value, 0, count);
         }
+        // new String(toStringCache, true);  true  使用共享 变量tostringcache  不需要再拷贝一份
+        // 但是这个变量不能再中途 比如 拷贝的过程中被改变
         return new String(toStringCache, true);
     }
 

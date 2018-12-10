@@ -1319,6 +1319,7 @@ public final class Math {
             // Raw conversion ok since NaN can't map to -0.0.
             return b;
         }
+        // Math 类里 求最大最小值用的也是三目运算
         return (a >= b) ? a : b;
     }
 

@@ -107,10 +107,11 @@ import java.util.regex.PatternSyntaxException;
  * @see     java.nio.charset.Charset
  * @since   JDK1.0
  */
-
+// String final 修饰 不可变
 public final class String
     implements java.io.Serializable, Comparable<String>, CharSequence {
     /** The value is used for character storage. */
+    //本质是一套  char[] 数组 保存的  注意了  这个数组 用  final  修饰
     private final char value[];
 
     /** Cache the hash code for the string */
@@ -162,6 +163,8 @@ public final class String
      * @param  value
      *         The initial value of the string
      */
+    //类似的构造方法  但是 这里的是数据的拷贝
+    //注意 String(char value[] .true) 的区别
     public String(char value[]) {
         this.value = Arrays.copyOf(value, value.length);
     }
@@ -235,6 +238,7 @@ public final class String
      *
      * @since  1.5
      */
+    // 一个数组的范围
     public String(int[] codePoints, int offset, int count) {
         if (offset < 0) {
             throw new StringIndexOutOfBoundsException(offset);
@@ -576,6 +580,7 @@ public final class String
      *         A {@code StringBuffer}
      */
     public String(StringBuffer buffer) {
+        //加锁
         synchronized(buffer) {
             this.value = Arrays.copyOf(buffer.getValue(), buffer.length());
         }
@@ -608,6 +613,7 @@ public final class String
     */
     String(char[] value, boolean share) {
         // assert share : "unshared not supported";
+        // shared true 直接将 改变 value 的 指向 ，而不是 拷贝 ，性能更高
         this.value = value;
     }
 
@@ -619,6 +625,7 @@ public final class String
      * @return  the length of the sequence of characters represented by this
      *          object.
      */
+    //返回 数组的长度
     public int length() {
         return value.length;
     }
@@ -653,6 +660,8 @@ public final class String
      *             argument is negative or not less than the length of this
      *             string.
      */
+
+    //底层是数组 。所以 没问题 直接通过数组的 下标找 最快
     public char charAt(int index) {
         if ((index < 0) || (index >= value.length)) {
             throw new StringIndexOutOfBoundsException(index);
@@ -1150,6 +1159,7 @@ public final class String
      *          value greater than {@code 0} if this string is
      *          lexicographically greater than the string argument.
      */
+    //重写比较方法
     public int compareTo(String anotherString) {
         int len1 = value.length;
         int len2 = anotherString.value.length;
@@ -1183,6 +1193,7 @@ public final class String
      */
     public static final Comparator<String> CASE_INSENSITIVE_ORDER
                                          = new CaseInsensitiveComparator();
+    //重写比较器
     private static class CaseInsensitiveComparator
             implements Comparator<String>, java.io.Serializable {
         // use serialVersionUID from JDK 1.2.2 for interoperability

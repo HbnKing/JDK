@@ -73,6 +73,7 @@ package java.lang;
  * @see         java.lang.String
  * @since       1.5
  */
+//  final  修饰的 不可以继承  与 StringBuffer对比  线程 不安全
 public final class StringBuilder
     extends AbstractStringBuilder
     implements java.io.Serializable, CharSequence
@@ -85,6 +86,7 @@ public final class StringBuilder
      * Constructs a string builder with no characters in it and an
      * initial capacity of 16 characters.
      */
+    //初始 容量  16
     public StringBuilder() {
         super(16);
     }

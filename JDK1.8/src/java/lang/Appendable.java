@@ -48,6 +48,7 @@ import java.io.IOException;
  *
  * @since 1.5
  */
+//APPENDABLE  可追加的 实现类有 Stringbuffer  StringBuilder
 public interface Appendable {
 
     /**

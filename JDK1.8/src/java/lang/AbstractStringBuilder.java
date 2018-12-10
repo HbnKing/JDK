@@ -44,10 +44,14 @@ import java.util.Arrays;
  * @author      Ulf Zibis
  * @since       1.5
  */
+//AbstractStringBuilder 实现 Appendable  接口  append  方法
+//CharSequence 提供 char[] 数组 查找方法 charAt
+//本身是一个抽象类
 abstract class AbstractStringBuilder implements Appendable, CharSequence {
     /**
      * The value is used for character storage.
      */
+    // 内部数据的存储方式
     char[] value;
 
     /**
@@ -125,6 +129,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * This implements the expansion semantics of ensureCapacity with no
      * size check or synchronization.
      */
+    //如果容量不够 扩容 翻倍
     void expandCapacity(int minimumCapacity) {
         int newCapacity = value.length * 2 + 2;
         if (newCapacity - minimumCapacity < 0)
@@ -134,6 +139,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
                 throw new OutOfMemoryError();
             newCapacity = Integer.MAX_VALUE;
         }
+        //进行数组value 的拷贝
         value = Arrays.copyOf(value, newCapacity);
     }
 
@@ -144,6 +150,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * Calling this method may, but is not required to, affect the value
      * returned by a subsequent call to the {@link #capacity()} method.
      */
+    //数组截取
     public void trimToSize() {
         if (count < value.length) {
             value = Arrays.copyOf(value, count);
@@ -179,7 +186,9 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
         if (newLength < 0)
             throw new StringIndexOutOfBoundsException(newLength);
         ensureCapacityInternal(newLength);
-
+        //填充数组 空字符 '\0'  如
+        //char str[6]="Hello";
+        //而在内存中则是"Hello\0"
         if (count < newLength) {
             Arrays.fill(value, count, newLength, '\0');
         }
@@ -375,6 +384,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * @throws     IndexOutOfBoundsException  if {@code index} is
      *             negative or greater than or equal to {@code length()}.
      */
+    //修改其中的某一个元素
     public void setCharAt(int index, char ch) {
         if ((index < 0) || (index >= count))
             throw new StringIndexOutOfBoundsException(index);
